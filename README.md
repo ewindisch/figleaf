@@ -21,7 +21,7 @@ Finally, you 'build':
 
 The resultant image must be run privileged:
 
-```$ docker run --privileged my_container_pid```
+```$ docker run --privileged my_container_pod```
 
 
 Usage: method #2 - Pass-in a fig.yml file.
