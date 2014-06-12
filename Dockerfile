@@ -14,9 +14,13 @@ RUN pip install -U fig
 
 RUN mkdir -p /opt/dind
 COPY wrapdocker /opt/dind/
+COPY run-fig /opt/dind/
 
 RUN mkdir -p /opt/figapp
 
 ONBUILD WORKDIR /opt/figapp
 ONBUILD COPY fig.yml /opt/figapp/
-ONBUILD ENTRYPOINT /opt/dind/wrapdocker; fig up; sleep infinity
+
+COPY README.md /opt/dind/README.md
+WORKDIR /opt/figapp
+CMD /opt/dind/run-fig

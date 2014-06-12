@@ -1,0 +1,17 @@
+#!/bin/bash -e
+
+if [ -f /opt/figapp/fig.yml ]; then
+    /opt/dind/wrapdocker;
+    fig up;
+    sleep infinity
+else
+    echo "No fig.yml found."
+    echo ""
+    echo "This image must be run with either '-v /your-fig-app:/opt/figapp',"
+    echo "or you may build a dependent image using 'FROM ewindisch/figleaf',"
+    echo "with a fig.yml file existing in the directory with your Dockerfile."
+    echo ""
+    echo "You may also refer to the documentation:"
+    echo " $ docker run cat /opt/dind/README.md"
+    echo ""
+fi
