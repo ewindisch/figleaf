@@ -3,12 +3,21 @@
 # First, make sure that cgroups are mounted correctly.
 CGROUP=/sys/fs/cgroup
 
+# Exit if a socket already exists,
+# we'll presume it's bind-mounted.
+if [ -S /var/run/docker.sock ]; then
+    while ! /bin/echo -e 'GET /version HTTP/1.0\n\n' | socat - unix-connect:/var/run/docker.sock | grep -q '200 OK'; do
+        sleep 1
+    done
+    exit 0
+fi
+
 [ -d $CGROUP ] ||
   mkdir $CGROUP
 
 mountpoint -q $CGROUP ||
   mount -n -t tmpfs -o uid=0,gid=0,mode=0755 cgroup $CGROUP || {
-    echo "Could not make a tmpfs mount. Did you use -privileged?"
+    echo "Could not make a tmpfs mount. Did you use --privileged?"
     exit 1
   }
 
@@ -77,15 +86,7 @@ do
 done
 popd >/dev/null
 
-# If we were given a PORT environment variable, start as a simple daemon;
-# otherwise, spawn a shell as well
-if [ "$PORT" ]
-then
-  exec docker -d -H 0.0.0.0:$PORT 2>&1 >/dev/null
-else
-  docker -d 2>&1 >/dev/null &
-  while ! /bin/echo -e 'GET /v1.3/version HTTP/1.0\n\n' | socat - unix-connect:/var/run/docker.sock | grep -q '200 OK'; do
+docker -d 2>&1 >/dev/null &
+while ! /bin/echo -e 'GET /version HTTP/1.0\n\n' | socat - unix-connect:/var/run/docker.sock | grep -q '200 OK'; do
     sleep 1
-  done
-
-fi
+done

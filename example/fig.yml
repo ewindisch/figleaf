@@ -1,2 +1,2 @@
-busybox:
-  image: busybox
+helloworld:
+    image: hello-world
