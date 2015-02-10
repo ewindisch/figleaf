@@ -19,9 +19,15 @@ Finally, you 'build':
 
 ```$ docker build -t my_container_pod .```
 
-The resultant image must be run privileged:
+The resultant image must either be given an existing Docker socket, or be run privileged.
+
+Example running privileged:
 
 ```$ docker run --privileged my_container_pod```
+
+Example running with a passed socket:
+
+```$ docker run -v /var/run/docker.sock:/var/run/docker.sock my_container_pod```
 
 
 Usage: method #2 - Pass-in a fig.yml file.
@@ -31,6 +37,8 @@ Assuming your fig.yml file is in the current directory, run:
 ```
 docker run --privileged -v $PWD:/opt/figapp ewindisch/figleaf
 ```
+
+As above, it is also possible to pass an existing socket when passing a fig.yml file.
 
 License
 -------
