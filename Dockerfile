@@ -14,7 +14,11 @@ RUN pip install -U fig
 
 RUN mkdir -p /opt/dind
 COPY wrapdocker /opt/dind/
+COPY docker-pull /opt/dind/
 COPY run-fig /opt/dind/
+
+# Add /opt/dind to PATH
+ENV PATH $PATH:/opt/dind
 
 RUN mkdir -p /opt/figapp
 

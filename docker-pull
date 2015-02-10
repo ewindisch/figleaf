@@ -1,0 +1,6 @@
+#!/bin/sh
+docker -d -b none -s vfs 2>/dev/null >/dev/null &
+while ! /bin/echo -e 'GET /version HTTP/1.0\n\n' | socat - unix-connect:/var/run/docker.sock | grep -q '200 OK'; do
+    sleep 1
+done
+docker pull $@
