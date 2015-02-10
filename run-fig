@@ -3,7 +3,6 @@
 if [ -n "${FIG_FILE}"] || [ -f /opt/figapp/fig.yml ]; then
     /opt/dind/wrapdocker;
     fig $@
-    sleep infinity
 else
     echo "No fig.yml found."
     echo ""
