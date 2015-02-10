@@ -12,6 +12,6 @@ else
     echo "with a fig.yml file existing in the directory with your Dockerfile."
     echo ""
     echo "You may also refer to the documentation:"
-    echo " $ docker run cat /opt/dind/README.md"
+    echo " $ docker run ewindisch/figleaf cat /opt/dind/README.md"
     echo ""
 fi
