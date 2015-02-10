@@ -66,16 +66,16 @@ If running figleaf with DinD, it may be valuable to seed images during
 the 'docker build', from within the Dockerfile.
 
 As long as the VFS driver is used, this is actually quite simple.
-This image comes with a small shell script called 'docker-pull' which
-may be used in a RUN statement from your Dockerfiles.
+This image comes with a wrapper for docker and fig which
+automatically allow RUN statements for their pull commands to function
+correctly from a build context.
 
 For example:
 
 ```
 FROM ewindisch/figleaf
-RUN docker-pull busybox
-RUN docker-pull hello-world
-RUN docker-pull ubuntu:latest
+RUN fig pull
+RUN docker pull busybox
 ```
 
 You would then build this in a directory containing a fig.yml file,
@@ -89,11 +89,11 @@ possible to do something like:
 # NOTE this example has not been tested... YMMV
 # this is probably not the ideal use of figleaf...
 FROM ewnidisch/figleaf
-RUN docker-pull busybox; \
+RUN docker pull busybox; \
     docker save > /opt/figapp/busybox.img
 CMD wrapdocker; \
     docker load < /opt/figapp/busybox.img; \
-    run-fig up
+    fig up
 ```
 
 License
