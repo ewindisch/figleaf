@@ -1,0 +1,23 @@
+#!/bin/bash
+# Run a minimal docker for the duration of our run,
+# if there is no host, no socket, and we lack the privileges
+# to create our own.
+
+# Set our PATH as not to hit this wrapper again
+export PATH="/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin"
+
+if [ -z "${DOCKER_HOST}" ] &&
+   [ ! -S /var/run/docker.sock ] &&
+   (! capsh --print | grep cap_sys_admin >/dev/null); then
+    rm -rf /var/run/docker.sock
+    docker -d -b none -s vfs -H unix:///var/run/docker.sock  2>/dev/null >/dev/null &
+    echo "Waiting for docker socket"
+    while ! /bin/echo -e 'GET /version HTTP/1.0\n\n' | socat - unix-connect:/var/run/docker.sock | grep -q '200 OK' 2>/dev/null; do
+        echo -n "."
+        sleep 1
+    done
+    echo ""
+fi
+
+# This might be called docker... or fig
+$(basename $0) $@
