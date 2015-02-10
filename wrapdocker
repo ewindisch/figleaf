@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# accept a storage driver, defaulting to vfs
+STORAGE_DRIVER=${STORAGE_DRIVER:-vfs}
+
 # First, make sure that cgroups are mounted correctly.
 CGROUP=/sys/fs/cgroup
 
@@ -86,7 +89,7 @@ do
 done
 popd >/dev/null
 
-docker -d 2>&1 >/dev/null &
+docker -s "${STORAGE_DRIVER}" -d 2>&1 >/dev/null &
 while ! /bin/echo -e 'GET /version HTTP/1.0\n\n' | socat - unix-connect:/var/run/docker.sock | grep -q '200 OK'; do
     sleep 1
 done
