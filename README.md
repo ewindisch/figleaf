@@ -40,6 +40,25 @@ docker run --privileged -v $PWD:/opt/figapp ewindisch/figleaf
 
 As above, it is also possible to pass an existing socket when passing a fig.yml file.
 
+
+Notes for Docker-in-Docker support
+----------------------------------
+
+Docker-in-Docker (DinD) is used whenever a socket is NOT passed to the
+container. DinD, by default, configures the VFS driver as this is the
+lowest-common-denominator. This driver also happens to allow 'docker
+pull' from the build context.
+
+To configure another storage driver from your Dockerfile:
+
+    FROM ewindisch/figleaf
+    ENV STORAGE_DRIVER aufs  # or devicemapper, overlayfs, etc...
+
+To configure from the command-line:
+
+    docker run --privileged -e STORAGE_DRIVER=devicemapper my-fig-app
+
+
 License
 -------
 Apache 2 License
