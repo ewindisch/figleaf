@@ -24,4 +24,3 @@ ONBUILD COPY fig.yml /opt/figapp/
 COPY README.md /opt/dind/README.md
 WORKDIR /opt/figapp
 ENTRYPOINT ["/opt/dind/run-fig"]
-CMD ["up", "-d"]

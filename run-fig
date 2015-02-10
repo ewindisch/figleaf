@@ -1,8 +1,23 @@
 #!/bin/bash -e
 
+if [ "${#@}" -eq 0 ]; then
+    echo "setting default parameters"
+    if [[ -t "0" || -p /dev/stdin ]]; then
+        echo "args=up"
+        # assume allocated a tty
+        ARGS=(up)
+    else
+        echo "args=up -d"
+        # no tty, so we'll run as a daemon
+        ARGS=(up -d)
+    fi
+else
+    ARGS=$@
+fi
+
 if [ -n "${FIG_FILE}"] || [ -f /opt/figapp/fig.yml ]; then
     /opt/dind/wrapdocker;
-    fig $@
+    fig $ARGS
 else
     echo "No fig.yml found."
     echo ""
