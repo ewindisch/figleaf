@@ -12,6 +12,6 @@ else
     echo "with a fig.yml file existing in the directory with your Dockerfile."
     echo ""
     echo "You may also refer to the documentation:"
-    echo " https://github.com/ewindisch/figleaf/blob/master/README.md
+    echo " https://github.com/ewindisch/figleaf/blob/master/README.md"
     echo ""
 fi
