@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
-if [ -f /opt/figapp/fig.yml ]; then
+if [ -n "${FIG_FILE}"] || [ -f /opt/figapp/fig.yml ]; then
     /opt/dind/wrapdocker;
-    fig up;
+    fig $@
     sleep infinity
 else
     echo "No fig.yml found."
@@ -12,6 +12,6 @@ else
     echo "with a fig.yml file existing in the directory with your Dockerfile."
     echo ""
     echo "You may also refer to the documentation:"
-    echo " $ docker run ewindisch/figleaf cat /opt/dind/README.md"
+    echo " https://github.com/ewindisch/figleaf/blob/master/README.md
     echo ""
 fi
